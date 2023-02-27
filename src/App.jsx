@@ -36,7 +36,7 @@ function App() {
   }, [value]);
 
   return (
-    <div style={{ width: "1000px", gap: "20%" }}>
+    <div style={{ padding: "10rem" }}>
       <LocalizationProvider dateAdapter={AdapterDayjs}>
         <DatePicker
           label="Enter date to search"
@@ -51,26 +51,13 @@ function App() {
         />
       </LocalizationProvider>
 
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          gap: "20%",
-        }}
-      >
-        <div style={{ zIndex: 10, background: "black" }}>
+      <div>
+        <div>
           <Chart />
         </div>
 
-        <div
-          style={{
-            zIndex: 2,
-            background: "red",
-          }}
-        >
-          <p>hello</p>
-          {/* <LineChart /> */}
+        <div>
+          <LineChart />
         </div>
       </div>
     </div>

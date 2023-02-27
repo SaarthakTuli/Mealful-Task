@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 
 import {
   ChartComponent,
@@ -14,11 +14,17 @@ import {
 import { useStateContext } from "../context/ContextProvider";
 
 const LineChart = () => {
-  const { subBarCustomData } = useStateContext();
+  const { subBarCustomData, selectedDate, getSlotData, subDataIndex } =
+    useStateContext();
+
+  useEffect(() => {
+    console.log("Run again");
+    getSlotData(subDataIndex);
+  }, [subDataIndex]);
 
   return (
     <ChartComponent
-      id="bar-chart"
+      // id="bar-chart"
       primaryXAxis={{
         valueType: "Category",
         interval: 1,
@@ -32,13 +38,14 @@ const LineChart = () => {
         labelStyle: { color: "white" },
       }}
       chartArea={{ border: { width: 2 } }}
-      style={{ width: "100%", height: "100%" }}
+      style={{ width: "500px" }}
     >
       <Inject services={[ColumnSeries, Category, DataLabel]} />
       <SeriesCollectionDirective>
-        {subBarCustomData.map((item, index) => (
-          <SeriesDirective key={{ index }} {...item} />
-        ))}
+        {subBarCustomData.map((item, index) => {
+          console.log("item is: ", item);
+          return <SeriesDirective key={{ index }} {...item} />;
+        })}
       </SeriesCollectionDirective>
     </ChartComponent>
   );

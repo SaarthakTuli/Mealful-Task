@@ -14,17 +14,18 @@ import {
 import { useStateContext } from "../context/ContextProvider";
 
 const Chart = () => {
+  const { barCustomData, getSlotData, setSubDataIndex } = useStateContext();
+
   const chartClick = (args) => {
     let seriesIndex = parseInt(args.target.charAt(args.target.length - 1));
-    getSlotData(seriesIndex);
+    setSubDataIndex(seriesIndex);
+
     console.log(seriesIndex);
   };
 
-  const { barCustomData, getSlotData } = useStateContext();
-
   return (
     <ChartComponent
-      id="bar-chart"
+      // id="bar-chart"
       primaryXAxis={{
         valueType: "Category",
         interval: 1,
@@ -39,6 +40,7 @@ const Chart = () => {
       }}
       chartArea={{ border: { width: 2 } }}
       chartMouseClick={(e) => chartClick(e)}
+      style={{ width: "500px" }}
     >
       <Inject services={[ColumnSeries, Category, DataLabel]} />
       <SeriesCollectionDirective>

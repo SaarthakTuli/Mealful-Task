@@ -4,6 +4,7 @@ const StateContext = createContext();
 
 export const ContextProvider = ({ children }) => {
   const [jsonData, setJsonData] = useState([]);
+  const [subDataIndex, setSubDataIndex] = useState(-1);
   const [cleanedData, setCleanedData] = useState([]);
   const [barChartData, setBarChartData] = useState([]);
   const [subBarChartData, setSubBarChartData] = useState([]);
@@ -157,6 +158,10 @@ export const ContextProvider = ({ children }) => {
   };
 
   const getSlotData = (index) => {
+    if (index == -1) {
+      return;
+    }
+
     const dict = [];
     const subBarData = [];
 
@@ -177,17 +182,17 @@ export const ContextProvider = ({ children }) => {
       subBarData.push({ x: key, y: value });
     }
 
-    subBarData.sort(function (a, b) {
-      var keyA = a.x;
-      var keyB = b.x;
-      console.log(keyA);
-      if (keyA < keyB) return -1;
-      if (keyA > keyB) return 1;
-      return 0;
-    });
+    // subBarData.sort(function (a, b) {
+    //   var keyA = a.x;
+    //   var keyB = b.x;
+    //   console.log(keyA);
+    //   if (keyA < keyB) return -1;
+    //   if (keyA > keyB) return 1;
+    //   return 0;
+    // });
 
     console.log(subBarData);
-    setSubBarChartData(subBarChartData);
+    setSubBarChartData(subBarData);
   };
 
   return (
@@ -201,6 +206,8 @@ export const ContextProvider = ({ children }) => {
         getSlotData,
         subBarCustomData,
         selectedDate,
+        subDataIndex,
+        setSubDataIndex,
       }}
     >
       {children}
