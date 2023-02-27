@@ -21,7 +21,7 @@ export const ContextProvider = ({ children }) => {
 
   useEffect(() => {
     axios
-      .get("/public/data.json")
+      .get("data.json")
       .then((response) => {
         console.log(response.data);
         setJsonData(response.data);
