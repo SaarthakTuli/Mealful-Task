@@ -25,6 +25,3 @@ dist-ssr
 
 # Local Netlify folder
 .netlify
-
-# File containing syncfusion key
-config.js
