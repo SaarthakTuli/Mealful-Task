@@ -13,14 +13,8 @@ import {
 
 import { useStateContext } from "../context/ContextProvider";
 
-const Chart = () => {
-  const chartClick = (args) => {
-    let seriesIndex = parseInt(args.target.charAt(args.target.length - 1));
-    getSlotData(seriesIndex);
-    console.log(seriesIndex);
-  };
-
-  const { barCustomData, getSlotData } = useStateContext();
+const LineChart = () => {
+  const { subBarCustomData } = useStateContext();
 
   return (
     <ChartComponent
@@ -38,11 +32,11 @@ const Chart = () => {
         labelStyle: { color: "white" },
       }}
       chartArea={{ border: { width: 2 } }}
-      chartMouseClick={(e) => chartClick(e)}
+      style={{ width: "100%", height: "100%" }}
     >
       <Inject services={[ColumnSeries, Category, DataLabel]} />
       <SeriesCollectionDirective>
-        {barCustomData.map((item, index) => (
+        {subBarCustomData.map((item, index) => (
           <SeriesDirective key={{ index }} {...item} />
         ))}
       </SeriesCollectionDirective>
@@ -50,4 +44,4 @@ const Chart = () => {
   );
 };
 
-export default Chart;
+export default LineChart;

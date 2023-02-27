@@ -4,7 +4,10 @@ const StateContext = createContext();
 
 export const ContextProvider = ({ children }) => {
   const [jsonData, setJsonData] = useState([]);
-  const [dataLine, setDataLine] = useState([]);
+  const [cleanedData, setCleanedData] = useState([]);
+  const [barChartData, setBarChartData] = useState([]);
+  const [subBarChartData, setSubBarChartData] = useState([]);
+  const [selectedDate, setSelectedDate] = useState("");
   const [nivoDataLine, setNivoDataLine] = useState([]);
   const [searchingDate, setSearchingDate] = useState("");
 
@@ -31,7 +34,24 @@ export const ContextProvider = ({ children }) => {
 
   const barCustomData = [
     {
-      dataSource: dataLine,
+      dataSource: barChartData,
+      xName: "x",
+      yName: "y",
+      name: selectedDate,
+      type: "Column",
+      marker: {
+        dataLabel: {
+          visible: true,
+          position: "Top",
+          font: { size: 16, fontWeight: "700", color: "#ffffff" },
+        },
+      },
+    },
+  ];
+
+  const subBarCustomData = [
+    {
+      dataSource: subBarChartData,
       xName: "x",
       yName: "y",
       name: searchingDate,
@@ -69,8 +89,6 @@ export const ContextProvider = ({ children }) => {
     } else {
       isSlot = "slot4";
     }
-
-    console.log(isSlot, time);
     return isSlot;
   };
 
@@ -121,23 +139,55 @@ export const ContextProvider = ({ children }) => {
       if (item_date == dateToSearch) {
         setSearchingDate(dateToSearch);
         const newDate = schedule_time.split(" ")[0];
+        const newTime = schedule_time.split(" ")[1];
 
-        // Create dictionary for dates and occurences...
-        if (newDate in dict) {
-          dict[newDate] += 1;
-        } else {
-          dict[newDate] = 1;
-        }
+        (dict[newDate] || (dict[newDate] = [])).push(checkSlot(newTime));
       }
     });
+    setCleanedData(dict);
+    console.log(dict);
 
-    // Create the appropriate data for barchart
+    //Create the appropriate data for barchart
     for (const [key, value] of Object.entries(dict)) {
-      barData.push({ x: key, y: value });
+      barData.push({ x: key, y: value.length });
     }
 
     console.log(barData);
-    setDataLine(barData);
+    setBarChartData(barData);
+  };
+
+  const getSlotData = (index) => {
+    const dict = [];
+    const subBarData = [];
+
+    const data = cleanedData[barChartData[index].x];
+    console.log(data);
+
+    setSelectedDate(data);
+
+    data.map((element) => {
+      if (element in dict) {
+        dict[element] += 1;
+      } else {
+        dict[element] = 1;
+      }
+    });
+
+    for (const [key, value] of Object.entries(dict)) {
+      subBarData.push({ x: key, y: value });
+    }
+
+    subBarData.sort(function (a, b) {
+      var keyA = a.x;
+      var keyB = b.x;
+      console.log(keyA);
+      if (keyA < keyB) return -1;
+      if (keyA > keyB) return 1;
+      return 0;
+    });
+
+    console.log(subBarData);
+    setSubBarChartData(subBarChartData);
   };
 
   return (
@@ -148,6 +198,9 @@ export const ContextProvider = ({ children }) => {
         barCustomData,
         getNivoData,
         nivoDataLine,
+        getSlotData,
+        subBarCustomData,
+        selectedDate,
       }}
     >
       {children}
