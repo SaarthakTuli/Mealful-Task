@@ -5,6 +5,11 @@ import "./index.css";
 
 import { ContextProvider } from "./context/ContextProvider";
 
+import { registerLicense } from "@syncfusion/ej2-base";
+import { syncfusionLicense } from "../config.js";
+
+registerLicense(syncfusionLicense);
+
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
     <ContextProvider>
