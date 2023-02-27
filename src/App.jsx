@@ -20,10 +20,16 @@ function App() {
   // }, []);
 
   useEffect(() => {
-    axios.get(api_url, { header: "no-cors" }).then((response) => {
-      console.log(response);
-      setJsonData(response.data);
-    });
+    axios
+      .get("../data.json")
+      .then((response) => {
+        setJsonData(response.data);
+      })
+      .catch((err) =>
+        console.error(
+          "ERROR: Unable to retrieve data from Json isong Axios....." + err
+        )
+      );
   }, []);
 
   return (
