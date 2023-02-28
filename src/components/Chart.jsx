@@ -33,8 +33,7 @@ const Chart = () => {
         majorGridLines: { width: 1 },
       }}
       primaryYAxis={{
-        majorGridLines: { width: 1 },
-        majorTickLines: { width: 1 },
+        majorGridLines: { width: 0 },
         interval: 1,
         lineStyle: { width: 1 },
         labelStyle: { color: "white" },

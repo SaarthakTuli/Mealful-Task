@@ -50,45 +50,22 @@ export const ContextProvider = ({ children }) => {
     },
   ];
 
-  // const subBarCustomData = [
-  //   {
-  //     dataSource: subBarChartData,
-  //     xName: "x",
-  //     yName: "y",
-  //     name: searchingDate,
-  //     type: "Column",
-  //     marker: {
-  //       dataLabel: {
-  //         visible: true,
-  //         position: "Top",
-  //         font: { size: 16, fontWeight: "700", color: "#ffffff" },
-  //       },
-  //     },
-  //   },
-  // ];
   const subBarCustomData = [
     {
       dataSource: subBarChartData,
       xName: "x",
       yName: "y",
       name: searchingDate,
-      width: "2",
-      marker: { visible: true, width: 10, height: 10 },
-      type: "Line",
+      type: "Column",
+      marker: {
+        dataLabel: {
+          visible: true,
+          position: "Top",
+          font: { size: 16, fontWeight: "700", color: "#ffffff" },
+        },
+      },
     },
   ];
-
-  const getSlot = (time, ch) => {
-    if (time >= "09:00:00" && time < "12:00:00") {
-      ch.slot1 += 1;
-    } else if (time >= "12:00:00" && time < "15:00:00") {
-      ch.slot2 += 1;
-    } else if (time >= "15:00:00" && time < "18:00:00") {
-      ch.slo31 += 1;
-    } else if (time >= "18:00:00" && time <= "21:00:00") {
-      ch.slot4 += 1;
-    }
-  };
 
   const checkSlot = (time) => {
     let isSlot = "";
@@ -99,7 +76,7 @@ export const ContextProvider = ({ children }) => {
     } else if (time >= "18:00:00" && time < "24:00:00") {
       isSlot = "18-24am";
     } else {
-      isSlot = "'00-06am";
+      isSlot = "00-06am";
     }
     return isSlot;
   };
@@ -174,6 +151,11 @@ export const ContextProvider = ({ children }) => {
     }
 
     const dict = [];
+    dict["00-06am"] = 0;
+    dict["06-12pm"] = 0;
+    dict["12-18pm"] = 0;
+    dict["18-24am"] = 0;
+
     const subBarData = [];
 
     const data = cleanedData[barChartData[index].x];
@@ -182,24 +164,20 @@ export const ContextProvider = ({ children }) => {
     setSelectedDate(data);
 
     data.map((element) => {
-      if (element in dict) {
-        dict[element] += 1;
-      } else {
-        dict[element] = 1;
-      }
+      dict[element] += 1;
     });
 
     for (const [key, value] of Object.entries(dict)) {
       subBarData.push({ x: key, y: value });
     }
 
-    subBarData.sort(function (a, b) {
-      var keyA = a.x;
-      var keyB = b.x;
-      if (keyA < keyB) return -1;
-      else if (keyA > keyB) return 1;
-      return 0;
-    });
+    // subBarData.sort(function (a, b) {
+    //   var keyA = a.x;
+    //   var keyB = b.x;
+    //   if (keyA < keyB) return -1;
+    //   else if (keyA > keyB) return 1;
+    //   return 0;
+    // });
 
     console.log(subBarData);
     setSubBarChartData(subBarData);
