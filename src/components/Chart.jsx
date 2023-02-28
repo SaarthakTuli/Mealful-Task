@@ -17,10 +17,11 @@ const Chart = () => {
   const { barCustomData, getSlotData, setSubDataIndex } = useStateContext();
 
   const chartClick = (args) => {
-    let seriesIndex = parseInt(args.target.charAt(args.target.length - 1));
-    setSubDataIndex(seriesIndex);
-
-    console.log(seriesIndex);
+    if (!isNaN(parseInt(args.target.charAt(args.target.length - 1)))) {
+      let seriesIndex = parseInt(args.target.charAt(args.target.length - 1));
+      setSubDataIndex(seriesIndex);
+      console.log("index is: ", seriesIndex);
+    }
   };
 
   return (

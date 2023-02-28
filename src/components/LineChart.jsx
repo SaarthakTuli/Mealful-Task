@@ -5,7 +5,6 @@ import {
   SeriesCollectionDirective,
   SeriesDirective,
   Inject,
-  Tooltip,
   ColumnSeries,
   Category,
   DataLabel,

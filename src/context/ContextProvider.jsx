@@ -50,20 +50,31 @@ export const ContextProvider = ({ children }) => {
     },
   ];
 
+  // const subBarCustomData = [
+  //   {
+  //     dataSource: subBarChartData,
+  //     xName: "x",
+  //     yName: "y",
+  //     name: searchingDate,
+  //     type: "Column",
+  //     marker: {
+  //       dataLabel: {
+  //         visible: true,
+  //         position: "Top",
+  //         font: { size: 16, fontWeight: "700", color: "#ffffff" },
+  //       },
+  //     },
+  //   },
+  // ];
   const subBarCustomData = [
     {
       dataSource: subBarChartData,
       xName: "x",
       yName: "y",
       name: searchingDate,
-      type: "Column",
-      marker: {
-        dataLabel: {
-          visible: true,
-          position: "Top",
-          font: { size: 16, fontWeight: "700", color: "#ffffff" },
-        },
-      },
+      width: "2",
+      marker: { visible: true, width: 10, height: 10 },
+      type: "Line",
     },
   ];
 
@@ -82,13 +93,13 @@ export const ContextProvider = ({ children }) => {
   const checkSlot = (time) => {
     let isSlot = "";
     if (time >= "06:00:00" && time < "12:00:00") {
-      isSlot = "slot1";
+      isSlot = "06-12pm";
     } else if (time >= "12:00:00" && time < "18:00:00") {
-      isSlot = "slot2";
+      isSlot = "12-18pm";
     } else if (time >= "18:00:00" && time < "24:00:00") {
-      isSlot = "slot3";
+      isSlot = "18-24am";
     } else {
-      isSlot = "slot4";
+      isSlot = "'00-06am";
     }
     return isSlot;
   };
@@ -182,14 +193,13 @@ export const ContextProvider = ({ children }) => {
       subBarData.push({ x: key, y: value });
     }
 
-    // subBarData.sort(function (a, b) {
-    //   var keyA = a.x;
-    //   var keyB = b.x;
-    //   console.log(keyA);
-    //   if (keyA < keyB) return -1;
-    //   if (keyA > keyB) return 1;
-    //   return 0;
-    // });
+    subBarData.sort(function (a, b) {
+      var keyA = a.x;
+      var keyB = b.x;
+      if (keyA < keyB) return -1;
+      else if (keyA > keyB) return 1;
+      return 0;
+    });
 
     console.log(subBarData);
     setSubBarChartData(subBarData);
