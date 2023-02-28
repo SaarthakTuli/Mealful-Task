@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Chart from "./components/Chart";
 import LineChart from "./components/LineChart";
+import Bonus from "./components/Bonus";
 
 import { useStateContext } from "./context/ContextProvider";
 
@@ -119,6 +120,16 @@ function App() {
             }`}</Typography>
             <LineChart />
           </Box>
+        </Box>
+
+        <Box
+          style={{
+            display: "flex",
+            justifyContent: "center",
+          }}
+          pb="2rem"
+        >
+          <Bonus />
         </Box>
       </Box>
     </Box>
