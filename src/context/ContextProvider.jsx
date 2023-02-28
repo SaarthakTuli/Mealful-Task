@@ -196,6 +196,8 @@ export const ContextProvider = ({ children }) => {
         selectedDate,
         subDataIndex,
         setSubDataIndex,
+        barChartData,
+        cleanedData,
       }}
     >
       {children}

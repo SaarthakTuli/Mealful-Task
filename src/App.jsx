@@ -18,7 +18,14 @@ function App() {
   const maxDate = new Date("2022-01-10");
 
   const [value, setValue] = useState(dayjs("2022-01-10"));
-  const { getOrderDate, jsonData, selectedDate } = useStateContext();
+  const {
+    getOrderDate,
+    jsonData,
+    selectedDate,
+    subDataIndex,
+    barChartData,
+    cleanedData,
+  } = useStateContext();
 
   const formatDate = (date) => {
     var d = new Date(date),
@@ -37,77 +44,81 @@ function App() {
   }, [value]);
 
   return (
-    <Box style={{ padding: "5rem" }}>
-      <Box
-        pb="2rem"
-        style={{
-          display: "flex",
-          justifyContent: "center",
-        }}
-      >
-        <Typography
-          color="#f0f0f0"
-          variant="h2"
-        >{`The selected date is: ${formatDate(value)}`}</Typography>
-      </Box>
-
-      <Box
-        style={{
-          display: "flex",
-          justifyContent: "center",
-        }}
-        pb="2rem"
-      >
-        <LocalizationProvider dateAdapter={AdapterDayjs}>
-          <DatePicker
-            label="Enter date to search"
-            value={value}
-            onChange={(newValue) => {
-              setValue(newValue);
-            }}
-            minDate={minDate}
-            maxDate={maxDate}
-            inputFormat="YYYY-MM-DD"
-            renderInput={(params) => (
-              <TextField
-                {...params}
-                sx={{
-                  ".MuiCalendarPicker-root": {
-                    color: "#111111",
-                  },
-                  ".MuiSvgIcon-root": {
-                    color: "#ffffff",
-                  },
-                  "& .MuiFormLabel-root": {
-                    color: "#ffffff",
-                  },
-                  ".MuiInputBase-input": {
-                    color: "#f0f0f0",
-                  },
-                }}
-              />
-            )}
-          />
-        </LocalizationProvider>
-      </Box>
-
-      <Box style={{ display: "grid", gridTemplateColumns: "1fr 1fr" }}>
-        <Box>
-          <Typography
-            color="#f0f0f0"
-            variant="h4"
-            pb="1rem"
-          >{`The selected date is: ${formatDate(value)}`}</Typography>
-          <Chart />
+    <Box
+      pt="5rem"
+      sx={{
+        display: "flex",
+        justifyContent: "center",
+      }}
+    >
+      <Box sx={{ display: "grid", gap: "5%" }} gap="20%">
+        <Box
+          style={{
+            display: "flex",
+            justifyContent: "center",
+          }}
+          pb="2rem"
+        >
+          <LocalizationProvider dateAdapter={AdapterDayjs}>
+            <DatePicker
+              label="Enter date to search"
+              value={value}
+              onChange={(newValue) => {
+                setValue(newValue);
+              }}
+              minDate={minDate}
+              maxDate={maxDate}
+              inputFormat="YYYY-MM-DD"
+              renderInput={(params) => (
+                <TextField
+                  {...params}
+                  sx={{
+                    ".MuiCalendarPicker-root": {
+                      color: "#111111",
+                    },
+                    ".MuiSvgIcon-root": {
+                      color: "#ffffff",
+                    },
+                    "& .MuiFormLabel-root": {
+                      color: "#ffffff",
+                    },
+                    ".MuiInputBase-input": {
+                      color: "#f0f0f0",
+                    },
+                  }}
+                />
+              )}
+            />
+          </LocalizationProvider>
         </Box>
 
-        <Box>
-          <Typography
-            color="#f0f0f0"
-            variant="h4"
-            pb="1rem"
-          >{`The selected date is: ${selectedDate}`}</Typography>
-          <LineChart />
+        <Box
+          sx={{
+            display: "grid",
+            gridTemplateColumns: "1fr 1fr",
+          }}
+        >
+          <Box>
+            <Typography
+              color="#f0f0f0"
+              variant="h4"
+              pb="1rem"
+            >{`The selected item_date is: ${formatDate(value)}`}</Typography>
+            <Chart />
+          </Box>
+
+          <Box>
+            <Typography
+              color="#f0f0f0"
+              variant="h4"
+              pb="1rem"
+            >{`The selected date to expand is: ${
+              barChartData[subDataIndex] == undefined
+                ? 0
+                : barChartData[subDataIndex].x
+            }`}</Typography>
+            <LineChart />
+          </Box>
         </Box>
       </Box>
     </Box>

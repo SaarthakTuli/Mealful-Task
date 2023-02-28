@@ -13,8 +13,13 @@ import {
 import { useStateContext } from "../context/ContextProvider";
 
 const LineChart = () => {
-  const { subBarCustomData, selectedDate, getSlotData, subDataIndex } =
-    useStateContext();
+  const {
+    subBarCustomData,
+    selectedDate,
+    getSlotData,
+    subDataIndex,
+    barChartData,
+  } = useStateContext();
 
   useEffect(() => {
     console.log("Run again");
