@@ -22,7 +22,7 @@ const LineChart = () => {
   } = useStateContext();
 
   useEffect(() => {
-    console.log("Run again");
+    // console.log("Run again");
     getSlotData(subDataIndex);
   }, [subDataIndex]);
 
@@ -46,7 +46,6 @@ const LineChart = () => {
       <Inject services={[ColumnSeries, Category, DataLabel]} />
       <SeriesCollectionDirective>
         {subBarCustomData.map((item, index) => {
-          console.log("item is: ", item);
           return <SeriesDirective key={{ index }} {...item} />;
         })}
       </SeriesCollectionDirective>

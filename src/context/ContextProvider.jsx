@@ -23,7 +23,7 @@ export const ContextProvider = ({ children }) => {
     axios
       .get("data.json")
       .then((response) => {
-        console.log(response.data);
+        // console.log(response.data);
         setJsonData(response.data);
       })
       .catch((err) =>
@@ -134,14 +134,14 @@ export const ContextProvider = ({ children }) => {
       }
     });
     setCleanedData(dict);
-    console.log(dict);
+    // console.log(dict);
 
     //Create the appropriate data for barchart
     for (const [key, value] of Object.entries(dict)) {
       barData.push({ x: key, y: value.length });
     }
 
-    console.log(barData);
+    // console.log(barData);
     setBarChartData(barData);
   };
 
@@ -159,7 +159,7 @@ export const ContextProvider = ({ children }) => {
     const subBarData = [];
 
     const data = cleanedData[barChartData[index].x];
-    console.log(data);
+    // console.log(data);
 
     setSelectedDate(data);
 
@@ -179,9 +179,11 @@ export const ContextProvider = ({ children }) => {
     //   return 0;
     // });
 
-    console.log(subBarData);
+    // console.log(subBarData);
     setSubBarChartData(subBarData);
   };
+
+  const getDateRange = (date1, date2) => {};
 
   return (
     <StateContext.Provider
@@ -198,6 +200,7 @@ export const ContextProvider = ({ children }) => {
         setSubDataIndex,
         barChartData,
         cleanedData,
+        getDateRange,
       }}
     >
       {children}

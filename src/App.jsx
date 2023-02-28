@@ -19,14 +19,8 @@ function App() {
   const maxDate = new Date("2022-01-10");
 
   const [value, setValue] = useState(dayjs("2022-01-10"));
-  const {
-    getOrderDate,
-    jsonData,
-    selectedDate,
-    subDataIndex,
-    barChartData,
-    cleanedData,
-  } = useStateContext();
+  const { getOrderDate, jsonData, subDataIndex, barChartData, getDateRange } =
+    useStateContext();
 
   const formatDate = (date) => {
     var d = new Date(date),
@@ -42,6 +36,7 @@ function App() {
 
   useEffect(() => {
     getOrderDate(formatDate(value), jsonData);
+    getDateRange("2021-07-11", "2021-07-18");
   }, [value]);
 
   return (
