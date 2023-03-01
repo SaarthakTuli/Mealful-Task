@@ -67,6 +67,15 @@ export const ContextProvider = ({ children }) => {
     },
   ];
 
+  function dateDiffInDays(a, b) {
+    const _MS_PER_DAY = 1000 * 60 * 60 * 24;
+    // Discard the time and time-zone information.
+    const utc1 = Date.UTC(a.getFullYear(), a.getMonth(), a.getDate());
+    const utc2 = Date.UTC(b.getFullYear(), b.getMonth(), b.getDate());
+
+    return Math.floor((utc2 - utc1) / _MS_PER_DAY);
+  }
+
   const checkSlot = (time) => {
     let isSlot = "";
     if (time >= "06:00:00" && time < "12:00:00") {
@@ -183,7 +192,33 @@ export const ContextProvider = ({ children }) => {
     setSubBarChartData(subBarData);
   };
 
-  const getDateRange = (date1, date2) => {};
+  const getDateRange = (date1, date2) => {
+    console.log("Date 1 is: ", date1);
+    console.log("Date 2 is: ", date2);
+    const dict = [];
+
+    jsonData.forEach((element) => {
+      const { schedule_time, item_date } = element;
+      const item_ordered_on = new Date(item_date);
+      if (item_ordered_on >= date1 && item_ordered_on <= date2) {
+        const checkDate = new Date(schedule_time);
+        const prior = dateDiffInDays(checkDate, item_ordered_on);
+
+        if (prior == -1) {
+          console.log("schedule: ", checkDate);
+          console.log("delivery: ", item_ordered_on);
+        }
+
+        if (prior in dict) {
+          dict[prior] += 1;
+        } else {
+          dict[prior] = 0;
+        }
+      }
+    });
+
+    console.log("Data is: ", dict);
+  };
 
   return (
     <StateContext.Provider

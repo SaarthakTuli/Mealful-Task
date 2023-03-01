@@ -36,7 +36,7 @@ function App() {
 
   useEffect(() => {
     getOrderDate(formatDate(value), jsonData);
-    getDateRange("2021-07-11", "2021-07-18");
+    getDateRange(new Date("2021-07-11"), new Date("2021-07-18"), jsonData);
   }, [value]);
 
   return (
