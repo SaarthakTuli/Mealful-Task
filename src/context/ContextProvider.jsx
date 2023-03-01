@@ -6,6 +6,7 @@ export const ContextProvider = ({ children }) => {
   const [jsonData, setJsonData] = useState([]);
   const [subDataIndex, setSubDataIndex] = useState(-1);
   const [cleanedData, setCleanedData] = useState([]);
+  const [bonusData, setBonusData] = useState([]);
   const [barChartData, setBarChartData] = useState([]);
   const [subBarChartData, setSubBarChartData] = useState([]);
   const [selectedDate, setSelectedDate] = useState("");
@@ -196,6 +197,8 @@ export const ContextProvider = ({ children }) => {
     console.log("Date 1 is: ", date1);
     console.log("Date 2 is: ", date2);
     const dict = [];
+    var items = [];
+    const rangeData = [];
 
     jsonData.forEach((element) => {
       const { schedule_time, item_date } = element;
@@ -204,25 +207,22 @@ export const ContextProvider = ({ children }) => {
         const checkDate = new Date(schedule_time);
         const prior = dateDiffInDays(checkDate, item_ordered_on);
 
-        if (prior == -1) {
-          console.log("schedule: ", checkDate);
-          console.log("delivery: ", item_ordered_on);
-        }
-
         if (prior in dict) {
           dict[prior] += 1;
         } else {
           dict[prior] = 0;
         }
+
+        items = Object.keys(dict).map((key) => {
+          return [key, dict[key]];
+        });
+
+        items.sort((first, second) => {
+          return first[0] - second[0];
+        });
+
+        console.log("items: ", items);
       }
-
-      dict
-        .sort((a, b) => parseInt(a) - parseInt(b))
-        .reduce((obj, key) => {
-          obj[key + "-sorted"] = dict[key];
-          return obj;
-        }, {});
-
       // dict.sort(function (a, b) {
       //   var keyA = parseInt(a.key);
       //   var keyB = parseInt(b.key);
@@ -231,8 +231,16 @@ export const ContextProvider = ({ children }) => {
       //   return 0;
       // });
     });
+    items.forEach((ele) => {
+      console.log("ele is: ", ele[0], " && ", ele[1]);
+      rangeData.push({
+        x: ele[0],
+        y: ele[1],
+      });
+    });
 
-    console.log("Data is: ", dict);
+    console.log("Data is: ", rangeData);
+    setBonusData(rangeData);
   };
 
   return (
@@ -251,6 +259,7 @@ export const ContextProvider = ({ children }) => {
         barChartData,
         cleanedData,
         getDateRange,
+        bonusData,
       }}
     >
       {children}
