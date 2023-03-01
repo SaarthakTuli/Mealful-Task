@@ -1,26 +1,6 @@
 import { createTheme } from "@mui/material/styles";
 
 const themeSettings = createTheme({
-  palette: {
-    primary: { main: "#fff" },
-    secondary: { main: "#fff" },
-    // text: {
-    //   main: "#ffffff",
-    //   // primary: "#f0f0f0",
-    //   secondary: "#111111",
-    // },
-    bg: {
-      white: "#fff",
-      primary: "##30d5c80d",
-      light: "#d8f5f3",
-    },
-    color: {
-      peach: "#FCF2DE",
-      blue: "#CBE2DD",
-      primary: "#30D5C8",
-      secondary: "#FFA500",
-    },
-  },
   typography: {
     fontFamily: ["Inter", "sans-serif"].join(","),
     fontSize: 12,
