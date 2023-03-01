@@ -20,14 +20,11 @@ const Bonus = () => {
   return (
     <Box>
       <ChartComponent
-        // id="bar-chart"
         primaryXAxis={{
           valueType: "Category",
           interval: 1,
-          majorGridLines: { width: 1 },
         }}
         primaryYAxis={{
-          majorGridLines: { width: 0 },
           interval: 5,
           lineStyle: { width: 1 },
           labelStyle: { color: "white" },
