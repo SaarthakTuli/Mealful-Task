@@ -10,6 +10,7 @@ import {
   ColumnSeries,
   Category,
   DataLabel,
+  TooltipRender,
 } from "@syncfusion/ej2-react-charts";
 
 import { useStateContext } from "../context/ContextProvider";
@@ -33,8 +34,16 @@ const Bonus = () => {
         }}
         chartArea={{ border: { width: 2 } }}
         style={{ width: "500px" }}
+        tooltip={{ enable: true }}
+        tooltipRender={(args) => {
+          args.text = `${args.point.x} ${
+            args.point.x < 0 ? "Late" : "days prior"
+          } : ${args.point.y}%`;
+        }}
       >
-        <Inject services={[ColumnSeries, Category, DataLabel]} />
+        <Inject
+          services={[ColumnSeries, Category, DataLabel, Tooltip, TooltipRender]}
+        />
         <SeriesCollectionDirective>
           {bonusCustomData.map((item, index) => (
             <SeriesDirective key={{ index }} {...item} />

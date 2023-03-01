@@ -19,12 +19,17 @@ function App() {
   const minDate = new Date("2021-05-18");
   const maxDate = new Date("2022-01-10");
 
-  const startDate = new Date("2022-01-10");
-  const endDate = new Date("2022-01-10");
-
   const [value, setValue] = useState(dayjs("2022-01-10"));
-  const { getOrderDate, jsonData, subDataIndex, barChartData, getDateRange } =
-    useStateContext();
+  const [startDate, setStartDate] = useState(dayjs("2021-05-18"));
+  const [endDate, setEndDate] = useState(dayjs("2022-01-10"));
+  const {
+    getOrderDate,
+    jsonData,
+    subDataIndex,
+    barChartData,
+    getDateRange,
+    bonusData,
+  } = useStateContext();
 
   const formatDate = (date) => {
     var d = new Date(date),
@@ -124,22 +129,114 @@ function App() {
           </Box>
         </Box>
 
+        {/* Bonus */}
         <Box
-          style={{
+          sx={{
             display: "flex",
             justifyContent: "center",
+            alignItems: "center",
+            gap: "10%",
           }}
         >
-          <Box pb="2rem">
-            <DateRangePickerComponent
-              id="daterangepicker e-date-range-wrapper"
-              placeholder="Select a range"
-              startDate={startDate}
-              endDate={endDate}
-              min={minDate}
-              max={maxDate}
-            />
-            <Bonus />
+          <Box>
+            <Box pb="2rem">
+              <Box
+                sx={{
+                  display: "flex",
+                  gap: "20%",
+                }}
+              >
+                {/* Start Range... */}
+                <Box>
+                  <LocalizationProvider dateAdapter={AdapterDayjs}>
+                    <DatePicker
+                      label="Enter Start date"
+                      value={startDate}
+                      onChange={(newValue) => {
+                        setStartDate(newValue);
+                      }}
+                      minDate={minDate}
+                      maxDate={endDate == maxDate ? maxDate : endDate}
+                      inputFormat="YYYY-MM-DD"
+                      renderInput={(params) => (
+                        <TextField
+                          {...params}
+                          sx={{
+                            ".MuiCalendarPicker-root": {
+                              color: "#111111",
+                            },
+                            ".MuiSvgIcon-root": {
+                              color: "#ffffff",
+                            },
+                            "& .MuiFormLabel-root": {
+                              color: "#ffffff",
+                            },
+                            ".MuiInputBase-input": {
+                              color: "#f0f0f0",
+                            },
+                          }}
+                        />
+                      )}
+                    />
+                  </LocalizationProvider>
+                </Box>
+
+                {/* End Range... */}
+                <Box>
+                  <LocalizationProvider dateAdapter={AdapterDayjs}>
+                    <DatePicker
+                      label="Enter date to search"
+                      value={endDate}
+                      onChange={(newValue) => {
+                        setEndDate(newValue);
+                      }}
+                      minDate={startDate == minDate ? minDate : startDate}
+                      maxDate={maxDate}
+                      inputFormat="YYYY-MM-DD"
+                      renderInput={(params) => (
+                        <TextField
+                          {...params}
+                          sx={{
+                            ".MuiCalendarPicker-root": {
+                              color: "#111111",
+                            },
+                            ".MuiSvgIcon-root": {
+                              color: "#ffffff",
+                            },
+                            "& .MuiFormLabel-root": {
+                              color: "#ffffff",
+                            },
+                            ".MuiInputBase-input": {
+                              color: "#f0f0f0",
+                            },
+                          }}
+                        />
+                      )}
+                    />
+                  </LocalizationProvider>
+                </Box>
+              </Box>
+
+              <Bonus />
+            </Box>
+          </Box>
+
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
+            <Box>
+              {bonusData.map(({ x, y }) => (
+                <Typography pb="0.2rem" color="white" variant="h4" key={x}>
+                  {x < 0
+                    ? `${y}% are ${Math.abs(x)} days late`
+                    : `${y}% are ${x} days prior`}
+                </Typography>
+              ))}
+            </Box>
           </Box>
         </Box>
       </Box>

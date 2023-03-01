@@ -40,9 +40,10 @@ const Chart = () => {
       }}
       chartArea={{ border: { width: 2 } }}
       chartMouseClick={(e) => chartClick(e)}
+      tooltip={{ enable: true }}
       style={{ width: "500px" }}
     >
-      <Inject services={[ColumnSeries, Category, DataLabel]} />
+      <Inject services={[ColumnSeries, Category, DataLabel, Tooltip]} />
       <SeriesCollectionDirective>
         {barCustomData.map((item, index) => (
           <SeriesDirective key={{ index }} {...item} />

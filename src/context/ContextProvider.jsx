@@ -39,7 +39,7 @@ export const ContextProvider = ({ children }) => {
       dataSource: barChartData,
       xName: "x",
       yName: "y",
-      name: selectedDate,
+      name: "",
       type: "Column",
       marker: {
         dataLabel: {
@@ -56,7 +56,7 @@ export const ContextProvider = ({ children }) => {
       dataSource: subBarChartData,
       xName: "x",
       yName: "y",
-      name: searchingDate,
+      name: "",
       type: "Column",
       marker: {
         dataLabel: {
@@ -73,12 +73,14 @@ export const ContextProvider = ({ children }) => {
       dataSource: bonusData,
       xName: "x",
       yName: "y",
-      name: "- -",
+      name: "",
       type: "Column",
       marker: {
         dataLabel: {
           visible: true,
           position: "Top",
+          // format: "n2",
+          template: (args) => `${args.point.y}%`,
           font: { size: 16, fontWeight: "700", color: "#ffffff" },
         },
       },
@@ -211,6 +213,7 @@ export const ContextProvider = ({ children }) => {
   };
 
   const getDateRange = (date1, date2) => {
+    var total = 0;
     const dict = [];
     var items = [];
     const rangeData = [];
@@ -223,6 +226,7 @@ export const ContextProvider = ({ children }) => {
         const prior = dateDiffInDays(checkDate, item_ordered_on);
 
         if (prior in dict) {
+          total++;
           dict[prior] += 1;
         } else {
           dict[prior] = 0;
@@ -247,7 +251,7 @@ export const ContextProvider = ({ children }) => {
     items.forEach((ele) => {
       rangeData.push({
         x: ele[0],
-        y: ele[1],
+        y: ((ele[1] / total) * 100).toFixed(2),
       });
     });
 
@@ -272,6 +276,7 @@ export const ContextProvider = ({ children }) => {
         cleanedData,
         getDateRange,
         bonusCustomData,
+        bonusData,
       }}
     >
       {children}
