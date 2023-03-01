@@ -4,11 +4,13 @@ const StateContext = createContext();
 
 export const ContextProvider = ({ children }) => {
   const [jsonData, setJsonData] = useState([]);
-  const [subDataIndex, setSubDataIndex] = useState(-1);
-  const [cleanedData, setCleanedData] = useState([]);
-  const [bonusData, setBonusData] = useState([]);
+  const [subDataIndex, setSubDataIndex] = useState(-1); // Index of bar chart selected
+  const [cleanedData, setCleanedData] = useState([]); // Completed processed data
+
+  // Chart Datas
   const [barChartData, setBarChartData] = useState([]);
   const [subBarChartData, setSubBarChartData] = useState([]);
+  const [bonusData, setBonusData] = useState([]);
 
   // Fetch data from the JSON File
   useEffect(() => {
@@ -91,7 +93,6 @@ export const ContextProvider = ({ children }) => {
   };
 
   // Helper functions
-
   // Calculates difference between 2 given dates aka 1 day, 2 day etc.
   function dateDiffInDays(a, b) {
     const msPerDay = 1000 * 60 * 60 * 24;
@@ -116,6 +117,7 @@ export const ContextProvider = ({ children }) => {
     return isSlot;
   };
 
+  // Data Processing
   // For Main Bar Chart
   const getOrderDate = (dateToSearch, data) => {
     const barData = [];
@@ -198,6 +200,7 @@ export const ContextProvider = ({ children }) => {
     items.sort((first, second) => {
       return first[0] - second[0];
     });
+
     items.forEach((ele) => {
       rangeData.push({
         x: ele[0],
