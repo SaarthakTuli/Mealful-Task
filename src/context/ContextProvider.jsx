@@ -180,24 +180,23 @@ export const ContextProvider = ({ children }) => {
       const { schedule_time, item_date } = element;
       const item_ordered_on = new Date(item_date);
       if (item_ordered_on >= date1 && item_ordered_on <= date2) {
-        const checkDate = new Date(schedule_time);
-        const prior = dateDiffInDays(checkDate, item_ordered_on);
+        const prior = dateDiffInDays(new Date(schedule_time), item_ordered_on);
 
+        total++;
         if (prior in dict) {
-          total++;
           dict[prior] += 1;
         } else {
-          dict[prior] = 0;
+          dict[prior] = 1;
         }
-
-        items = Object.keys(dict).map((key) => {
-          return [key, dict[key]];
-        });
-
-        items.sort((first, second) => {
-          return first[0] - second[0];
-        });
       }
+    });
+
+    items = Object.keys(dict).map((key) => {
+      return [key, dict[key]];
+    });
+
+    items.sort((first, second) => {
+      return first[0] - second[0];
     });
     items.forEach((ele) => {
       rangeData.push({
