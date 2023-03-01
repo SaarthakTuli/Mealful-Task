@@ -13,34 +13,23 @@ import {
 
 import { useStateContext } from "../context/ContextProvider";
 
-const LineChart = () => {
+const SubBarChart = () => {
   const {
     subBarCustomData,
-    selectedDate,
     getSlotData,
     subDataIndex,
-    barChartData,
+    primaryXAxis,
+    primaryYAxis,
   } = useStateContext();
 
   useEffect(() => {
-    // console.log("Run again");
     getSlotData(subDataIndex);
   }, [subDataIndex]);
 
   return (
     <ChartComponent
-      // id="bar-chart"
-      primaryXAxis={{
-        valueType: "Category",
-        interval: 1,
-        majorGridLines: { width: 1 },
-      }}
-      primaryYAxis={{
-        majorGridLines: { width: 0 },
-        interval: 1,
-        lineStyle: { width: 1 },
-        labelStyle: { color: "white" },
-      }}
+      primaryXAxis={primaryXAxis}
+      primaryYAxis={primaryYAxis}
       chartArea={{ border: { width: 2 } }}
       style={{ width: "500px" }}
       tooltip={{ enable: true }}
@@ -55,4 +44,4 @@ const LineChart = () => {
   );
 };
 
-export default LineChart;
+export default SubBarChart;

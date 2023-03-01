@@ -9,22 +9,12 @@ export const ContextProvider = ({ children }) => {
   const [bonusData, setBonusData] = useState([]);
   const [barChartData, setBarChartData] = useState([]);
   const [subBarChartData, setSubBarChartData] = useState([]);
-  const [selectedDate, setSelectedDate] = useState("");
-  const [nivoDataLine, setNivoDataLine] = useState([]);
-  const [searchingDate, setSearchingDate] = useState("");
 
-  class Children {
-    constructor(name, loc) {
-      this.name = name;
-      this.loc = loc;
-    }
-  }
-
+  // Fetch data from the JSON File
   useEffect(() => {
     axios
       .get("data.json")
       .then((response) => {
-        // console.log(response.data);
         setJsonData(response.data);
       })
       .catch((err) =>
@@ -34,6 +24,7 @@ export const ContextProvider = ({ children }) => {
       );
   }, []);
 
+  // Data and style for Bar Charts
   const barCustomData = [
     {
       dataSource: barChartData,
@@ -79,7 +70,6 @@ export const ContextProvider = ({ children }) => {
         dataLabel: {
           visible: true,
           position: "Top",
-          // format: "n2",
           template: (args) => `${args.point.y}%`,
           font: { size: 16, fontWeight: "700", color: "#ffffff" },
         },
@@ -87,15 +77,31 @@ export const ContextProvider = ({ children }) => {
     },
   ];
 
+  const primaryXAxis = {
+    valueType: "Category",
+    interval: 1,
+    majorGridLines: { width: 1 },
+  };
+
+  const primaryYAxis = {
+    majorGridLines: { width: 0 },
+    interval: 1,
+    lineStyle: { width: 1 },
+    labelStyle: { color: "white" },
+  };
+
+  // Helper functions
+
+  // Calculates difference between 2 given dates aka 1 day, 2 day etc.
   function dateDiffInDays(a, b) {
     const msPerDay = 1000 * 60 * 60 * 24;
-    // Discard the time and time-zone information.
     const utc1 = Date.UTC(a.getFullYear(), a.getMonth(), a.getDate());
     const utc2 = Date.UTC(b.getFullYear(), b.getMonth(), b.getDate());
 
     return Math.floor((utc2 - utc1) / msPerDay);
   }
 
+  // Check which time slot the user ordered in....
   const checkSlot = (time) => {
     let isSlot = "";
     if (time >= "06:00:00" && time < "12:00:00") {
@@ -110,42 +116,7 @@ export const ContextProvider = ({ children }) => {
     return isSlot;
   };
 
-  const getNivoData = (dateToSearch, data) => {
-    const nivoData = [];
-
-    data.forEach((element) => {
-      const { schedule_time, item_date } = element;
-
-      if (item_date == dateToSearch) {
-        setSearchingDate(dateToSearch);
-
-        const newDate = schedule_time.split(" ")[0];
-        const newTime = schedule_time.split(" ")[1];
-
-        const index = nivoData.findIndex((e) => e.name === newDate);
-
-        if (index == -1) {
-          nivoData.push({
-            name: newDate,
-            color: "hsl(346, 70%, 50%)",
-            children: [new Children(checkSlot(newTime), 1)],
-          });
-        } else {
-          const ele = nivoData[index].children;
-          const childIndex = ele.findIndex((e) => e.name == checkSlot(newTime));
-          if (childIndex == -1) {
-            ele.push(new Children(checkSlot(newTime), 1));
-          } else {
-            ele[childIndex].loc += 1;
-          }
-        }
-
-        console.log("nivo data is: ", nivoData);
-      }
-    });
-    setNivoDataLine(nivoData);
-  };
-
+  // For Main Bar Chart
   const getOrderDate = (dateToSearch, data) => {
     const barData = [];
     const dict = [];
@@ -155,42 +126,38 @@ export const ContextProvider = ({ children }) => {
 
       // Check for the particular item_date...
       if (item_date == dateToSearch) {
-        setSearchingDate(dateToSearch);
         const newDate = schedule_time.split(" ")[0];
         const newTime = schedule_time.split(" ")[1];
 
+        // Creating dictionary where Date is key & an Array of all the time slots is the value. Eg:- ['2022-01-10': ['00:06am', '00:06am', '06:12pm', '18:24am']]
         (dict[newDate] || (dict[newDate] = [])).push(checkSlot(newTime));
       }
     });
+
+    // It stores the entire data which will later be used for expansion...
     setCleanedData(dict);
-    // console.log(dict);
 
     //Create the appropriate data for barchart
     for (const [key, value] of Object.entries(dict)) {
       barData.push({ x: key, y: value.length });
     }
 
-    // console.log(barData);
     setBarChartData(barData);
   };
 
+  // For Sub Bar Chart
   const getSlotData = (index) => {
+    // Guard for random area clicked..
     if (index == -1) {
       return;
     }
 
-    const dict = [];
-    dict["00-06am"] = 0;
-    dict["06-12pm"] = 0;
-    dict["12-18pm"] = 0;
-    dict["18-24am"] = 0;
-
+    const dict = { "00-06am": 0, "06-12pm": 0, "12-18pm": 0, "18-24am": 0 };
     const subBarData = [];
 
-    const data = cleanedData[barChartData[index].x];
-    // console.log(data);
-
-    setSelectedDate(data);
+    // index is the index of the bar chart clicked
+    // barChartData[index].x will give me the date
+    const data = cleanedData[barChartData[index].x]; // data now stores the array of slots
 
     data.map((element) => {
       dict[element] += 1;
@@ -200,15 +167,6 @@ export const ContextProvider = ({ children }) => {
       subBarData.push({ x: key, y: value });
     }
 
-    // subBarData.sort(function (a, b) {
-    //   var keyA = a.x;
-    //   var keyB = b.x;
-    //   if (keyA < keyB) return -1;
-    //   else if (keyA > keyB) return 1;
-    //   return 0;
-    // });
-
-    // console.log(subBarData);
     setSubBarChartData(subBarData);
   };
 
@@ -240,13 +198,6 @@ export const ContextProvider = ({ children }) => {
           return first[0] - second[0];
         });
       }
-      // dict.sort(function (a, b) {
-      //   var keyA = parseInt(a.key);
-      //   var keyB = parseInt(b.key);
-      //   if (keyA < keyB) return -1;
-      //   else if (keyA > keyB) return 1;
-      //   return 0;
-      // });
     });
     items.forEach((ele) => {
       rangeData.push({
@@ -255,7 +206,6 @@ export const ContextProvider = ({ children }) => {
       });
     });
 
-    console.log("RangeData is: ", rangeData);
     setBonusData(rangeData);
   };
 
@@ -265,11 +215,8 @@ export const ContextProvider = ({ children }) => {
         jsonData,
         getOrderDate,
         barCustomData,
-        getNivoData,
-        nivoDataLine,
         getSlotData,
         subBarCustomData,
-        selectedDate,
         subDataIndex,
         setSubDataIndex,
         barChartData,
@@ -277,6 +224,8 @@ export const ContextProvider = ({ children }) => {
         getDateRange,
         bonusCustomData,
         bonusData,
+        primaryXAxis,
+        primaryYAxis,
       }}
     >
       {children}

@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from "react";
-import Chart from "./components/Chart";
-import LineChart from "./components/LineChart";
+import MainBarChart from "./components/MainBarChart";
+import SubBarChart from "./components/SubBarChart";
 import Bonus from "./components/Bonus";
-import { DateRangePickerComponent } from "@syncfusion/ej2-react-calendars";
 
 import { useStateContext } from "./context/ContextProvider";
 
@@ -112,7 +111,7 @@ function App() {
               variant="h4"
               pb="1rem"
             >{`The selected item_date is: ${formatDate(value)}`}</Typography>
-            <Chart />
+            <MainBarChart />
           </Box>
 
           <Box>
@@ -125,7 +124,7 @@ function App() {
                 ? 0
                 : barChartData[subDataIndex].x
             }`}</Typography>
-            <LineChart />
+            <SubBarChart />
           </Box>
         </Box>
 

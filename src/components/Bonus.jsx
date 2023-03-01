@@ -16,25 +16,25 @@ import {
 import { useStateContext } from "../context/ContextProvider";
 
 const Bonus = () => {
-  const { bonusCustomData } = useStateContext();
+  const { bonusCustomData, primaryXAxis } = useStateContext();
   return (
     <Box>
       <ChartComponent
-        primaryXAxis={{
-          valueType: "Category",
-          interval: 1,
-        }}
+        primaryXAxis={primaryXAxis}
         primaryYAxis={{
+          majorGridLines: { width: 0 },
           interval: 5,
           lineStyle: { width: 1 },
           labelStyle: { color: "white" },
         }}
         chartArea={{ border: { width: 2 } }}
-        style={{ width: "500px" }}
+        style={{ minWidth: "500px" }}
         tooltip={{ enable: true }}
         tooltipRender={(args) => {
-          args.text = `${args.point.x} ${
-            args.point.x < 0 ? "Late" : "days prior"
+          args.text = `${
+            args.point.x < 0
+              ? `${Math.abs(args.point.x)} days Late`
+              : `${args.point.x} days prior`
           } : ${args.point.y}%`;
         }}
       >
