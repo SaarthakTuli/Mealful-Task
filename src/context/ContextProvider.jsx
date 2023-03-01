@@ -86,12 +86,12 @@ export const ContextProvider = ({ children }) => {
   ];
 
   function dateDiffInDays(a, b) {
-    const _MS_PER_DAY = 1000 * 60 * 60 * 24;
+    const msPerDay = 1000 * 60 * 60 * 24;
     // Discard the time and time-zone information.
     const utc1 = Date.UTC(a.getFullYear(), a.getMonth(), a.getDate());
     const utc2 = Date.UTC(b.getFullYear(), b.getMonth(), b.getDate());
 
-    return Math.floor((utc2 - utc1) / _MS_PER_DAY);
+    return Math.floor((utc2 - utc1) / msPerDay);
   }
 
   const checkSlot = (time) => {
@@ -211,8 +211,6 @@ export const ContextProvider = ({ children }) => {
   };
 
   const getDateRange = (date1, date2) => {
-    console.log("Date 1 is: ", date1);
-    console.log("Date 2 is: ", date2);
     const dict = [];
     var items = [];
     const rangeData = [];
@@ -237,8 +235,6 @@ export const ContextProvider = ({ children }) => {
         items.sort((first, second) => {
           return first[0] - second[0];
         });
-
-        console.log("items: ", items);
       }
       // dict.sort(function (a, b) {
       //   var keyA = parseInt(a.key);
@@ -249,14 +245,13 @@ export const ContextProvider = ({ children }) => {
       // });
     });
     items.forEach((ele) => {
-      console.log("ele is: ", ele[0], " && ", ele[1]);
       rangeData.push({
         x: ele[0],
         y: ele[1],
       });
     });
 
-    console.log("Data is: ", rangeData);
+    console.log("RangeData is: ", rangeData);
     setBonusData(rangeData);
   };
 

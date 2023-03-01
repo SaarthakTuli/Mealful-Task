@@ -19,9 +19,10 @@ function App() {
   const minDate = new Date("2021-05-18");
   const maxDate = new Date("2022-01-10");
 
+  const startDate = new Date("2022-01-10");
+  const endDate = new Date("2022-01-10");
+
   const [value, setValue] = useState(dayjs("2022-01-10"));
-  const [startDate, setStartDate] = useState(dayjs("2022-01-10"));
-  const [endDate, setEndDate] = useState(dayjs("2022-01-10"));
   const { getOrderDate, jsonData, subDataIndex, barChartData, getDateRange } =
     useStateContext();
 
@@ -39,8 +40,11 @@ function App() {
 
   useEffect(() => {
     getOrderDate(formatDate(value), jsonData);
-    getDateRange(startDate, endDate, jsonData);
   }, [value]);
+
+  useEffect(() => {
+    getDateRange(startDate, endDate, jsonData);
+  }, [startDate, endDate]);
 
   return (
     <Box
@@ -125,17 +129,18 @@ function App() {
             display: "flex",
             justifyContent: "center",
           }}
-          pb="2rem"
         >
-          <DateRangePickerComponent
-            id="daterangepicker"
-            placeholder="Select a range"
-            startDate={startDate}
-            endDate={endDate}
-            min={minDate}
-            max={maxDate}
-          />
-          <Bonus />
+          <Box pb="2rem">
+            <DateRangePickerComponent
+              id="daterangepicker e-date-range-wrapper"
+              placeholder="Select a range"
+              startDate={startDate}
+              endDate={endDate}
+              min={minDate}
+              max={maxDate}
+            />
+            <Bonus />
+          </Box>
         </Box>
       </Box>
     </Box>
