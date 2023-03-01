@@ -215,6 +215,21 @@ export const ContextProvider = ({ children }) => {
           dict[prior] = 0;
         }
       }
+
+      dict
+        .sort((a, b) => parseInt(a) - parseInt(b))
+        .reduce((obj, key) => {
+          obj[key + "-sorted"] = dict[key];
+          return obj;
+        }, {});
+
+      // dict.sort(function (a, b) {
+      //   var keyA = parseInt(a.key);
+      //   var keyB = parseInt(b.key);
+      //   if (keyA < keyB) return -1;
+      //   else if (keyA > keyB) return 1;
+      //   return 0;
+      // });
     });
 
     console.log("Data is: ", dict);
