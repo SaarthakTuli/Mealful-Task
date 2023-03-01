@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import Chart from "./components/Chart";
 import LineChart from "./components/LineChart";
 import Bonus from "./components/Bonus";
+import { DateRangePickerComponent } from "@syncfusion/ej2-react-calendars";
 
 import { useStateContext } from "./context/ContextProvider";
 
@@ -19,6 +20,8 @@ function App() {
   const maxDate = new Date("2022-01-10");
 
   const [value, setValue] = useState(dayjs("2022-01-10"));
+  const [startDate, setStartDate] = useState(dayjs("2022-01-10"));
+  const [endDate, setEndDate] = useState(dayjs("2022-01-10"));
   const { getOrderDate, jsonData, subDataIndex, barChartData, getDateRange } =
     useStateContext();
 
@@ -36,7 +39,7 @@ function App() {
 
   useEffect(() => {
     getOrderDate(formatDate(value), jsonData);
-    getDateRange(new Date("2021-07-11"), new Date("2021-07-18"), jsonData);
+    getDateRange(startDate, endDate, jsonData);
   }, [value]);
 
   return (
@@ -124,6 +127,14 @@ function App() {
           }}
           pb="2rem"
         >
+          <DateRangePickerComponent
+            id="daterangepicker"
+            placeholder="Select a range"
+            startDate={startDate}
+            endDate={endDate}
+            min={minDate}
+            max={maxDate}
+          />
           <Bonus />
         </Box>
       </Box>

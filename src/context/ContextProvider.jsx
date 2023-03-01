@@ -68,6 +68,23 @@ export const ContextProvider = ({ children }) => {
     },
   ];
 
+  const bonusCustomData = [
+    {
+      dataSource: bonusData,
+      xName: "x",
+      yName: "y",
+      name: "- -",
+      type: "Column",
+      marker: {
+        dataLabel: {
+          visible: true,
+          position: "Top",
+          font: { size: 16, fontWeight: "700", color: "#ffffff" },
+        },
+      },
+    },
+  ];
+
   function dateDiffInDays(a, b) {
     const _MS_PER_DAY = 1000 * 60 * 60 * 24;
     // Discard the time and time-zone information.
@@ -259,7 +276,7 @@ export const ContextProvider = ({ children }) => {
         barChartData,
         cleanedData,
         getDateRange,
-        bonusData,
+        bonusCustomData,
       }}
     >
       {children}

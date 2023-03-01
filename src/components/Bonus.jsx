@@ -15,7 +15,7 @@ import {
 import { useStateContext } from "../context/ContextProvider";
 
 const Bonus = () => {
-  const { bonusData } = useStateContext();
+  const { bonusCustomData } = useStateContext();
   return (
     <Box>
       <ChartComponent
@@ -27,17 +27,16 @@ const Bonus = () => {
         }}
         primaryYAxis={{
           majorGridLines: { width: 0 },
-          interval: 1,
+          interval: 5,
           lineStyle: { width: 1 },
           labelStyle: { color: "white" },
         }}
         chartArea={{ border: { width: 2 } }}
-        chartMouseClick={(e) => chartClick(e)}
         style={{ width: "500px" }}
       >
         <Inject services={[ColumnSeries, Category, DataLabel]} />
         <SeriesCollectionDirective>
-          {bonusData.map((item, index) => (
+          {bonusCustomData.map((item, index) => (
             <SeriesDirective key={{ index }} {...item} />
           ))}
         </SeriesCollectionDirective>
